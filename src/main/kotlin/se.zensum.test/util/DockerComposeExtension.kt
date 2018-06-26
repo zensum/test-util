@@ -14,7 +14,7 @@ class DockerComposeExtension : BeforeAllCallback, AfterAllCallback, ParameterRes
     private lateinit var docker: DockerComposeRule
 
     override fun beforeAll(context: ExtensionContext) {
-        val annotation = context.testMethod.get().getAnnotation(DockerCompose::class.java)
+        val annotation = context.testClass.get().getAnnotation(DockerCompose::class.java)
         val builder: DockerComposeRule.Builder = DockerComposeRule.builder()
             .pullOnStartup(true)
             .file(annotation.file)
