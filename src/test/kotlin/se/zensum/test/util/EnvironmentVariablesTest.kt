@@ -4,8 +4,12 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Test
 
+@EnvironmentVariable("ClassTest", "BestClass")
 class EnvironmentVariablesTest {
-
+    @Test
+    fun createClassEnironmentVariable() {
+        assertThat(System.getenv("ClassTest"), equalTo("BestClass"))
+    }
     @Test
     @EnvironmentVariable("Testing", "Testing1234")
     fun createEnvironmentVariable() {
@@ -14,12 +18,12 @@ class EnvironmentVariablesTest {
 
     @Test
     @EnvironmentVariables(
-            EnvironmentVariable("Testing", "Testing1234"),
-            EnvironmentVariable("Testing2", "Taco")
+            EnvironmentVariable("MTesting", "Testing1234"),
+            EnvironmentVariable("MTesting2", "Taco")
     )
     fun createMultipleVariables() {
-        assertThat(System.getenv("Testing"), equalTo("Testing1234"))
-        assertThat(System.getenv("Testing2"), equalTo("Taco"))
+        assertThat(System.getenv("MTesting"), equalTo("Testing1234"))
+        assertThat(System.getenv("MTesting2"), equalTo("Taco"))
     }
 
 }

@@ -9,7 +9,7 @@ import java.util.*
 
 @Retention
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.CLASS)
-@ExtendWith(EnvironmentVariableExtension::class)
+@ExtendWith(EnvironmentVariablesExtension::class)
  annotation class EnvironmentVariable(val key: String, val value: String)
 
 // Remove when https://youtrack.jetbrains.com/issue/KT-12794 is solved and use @Repeated annotation
@@ -20,29 +20,34 @@ annotation class EnvironmentVariables(vararg val environmentVariables: Environme
 
 class EnvironmentVariablesExtension : AfterEachCallback, BeforeEachCallback {
     override fun afterEach(context: ExtensionContext) {
-        val annotations = context.testMethod.get().getAnnotation(EnvironmentVariables::class.java)
-        val annotationMap = annotations.environmentVariables.map { Pair(it.key, it.value) }.toMap()
-        clearEnv(annotationMap)
+        var annotations = context.testMethod.get().annotations
+        annotations += context.testClass.get().annotations
+        var environmentAnnotations: MutableList<EnvironmentVariable> = ArrayList()
+        annotations.forEach {
+            if(it is EnvironmentVariable) {
+                environmentAnnotations.add(it)
+            } else if (it is EnvironmentVariables) {
+                environmentAnnotations.addAll(it.environmentVariables)
+            }
+        }
+        clearEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
     }
 
     override fun beforeEach(context: ExtensionContext) {
-        val annotations = context.testMethod.get().getAnnotation(EnvironmentVariables::class.java)
-        val annotationMap = annotations.environmentVariables.map { Pair(it.key, it.value) }.toMap()
-        setEnv(annotationMap)
+        var annotations = context.testMethod.get().annotations
+        annotations += context.testClass.get().annotations
+        var environmentAnnotations: MutableList<EnvironmentVariable> = ArrayList()
+        annotations.forEach {
+            if(it is EnvironmentVariable) {
+                environmentAnnotations.add(it)
+            } else if (it is EnvironmentVariables) {
+                environmentAnnotations.addAll(it.environmentVariables)
+            }
+        }
+        setEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
     }
 }
 
-class EnvironmentVariableExtension : AfterEachCallback, BeforeEachCallback {
-    override fun afterEach(context: ExtensionContext) {
-        val annotation = context.testMethod.get().getAnnotation(EnvironmentVariable::class.java)
-        clearEnv(mapOf(annotation.key to annotation.value))
-    }
-
-    override fun beforeEach(context: ExtensionContext) {
-        val annotation = context.testMethod.get().getAnnotation(EnvironmentVariable::class.java)
-        setEnv(mapOf(annotation.key to annotation.value))
-    }
-}
 
 @Throws(Exception::class)
 private fun clearEnv(environmentVariables: Map<String, String>) {
