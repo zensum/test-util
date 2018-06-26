@@ -16,7 +16,6 @@ class DockerComposeExtension : BeforeAllCallback, AfterAllCallback, ParameterRes
     override fun beforeAll(context: ExtensionContext) {
         val annotation = context.testClass.get().getAnnotation(DockerCompose::class.java)
         val builder: DockerComposeRule.Builder = DockerComposeRule.builder()
-            .pullOnStartup(true)
             .file(annotation.file)
             .saveLogsTo(annotation.logPath)
 
