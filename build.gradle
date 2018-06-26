@@ -1,8 +1,12 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "1.2.50"
+    id "com.github.johnrengelman.shadow" version "2.0.4"
 }
 apply plugin: 'java'
+apply plugin: 'maven'
 apply plugin: 'org.jetbrains.kotlin.jvm'
+apply from: "jar.gradle"
+
 
 def kotlin_version = '1.2.50'
 def kotlin_api_version = '1.2'
