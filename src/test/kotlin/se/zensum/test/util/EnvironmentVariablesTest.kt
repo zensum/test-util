@@ -10,6 +10,7 @@ class EnvironmentVariablesTest {
     fun createClassEnironmentVariable() {
         assertThat(System.getenv("ClassTest"), equalTo("BestClass"))
     }
+
     @Test
     @EnvironmentVariable("Testing", "Testing1234")
     fun createEnvironmentVariable() {

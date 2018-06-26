@@ -2,6 +2,7 @@ package se.zensum.test.util
 
 import org.junit.jupiter.api.extension.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Retention
@@ -29,14 +30,16 @@ class EnvironmentVariablesExtension : AfterEachCallback, BeforeEachCallback, Bef
     }
 
     override fun afterEach(context: ExtensionContext) {
-        val annotations = context.testMethod.get().annotations
+        var annotations = context.testMethod.get().annotations
+        annotations += context.testClass.get().annotations
         val environmentAnnotations: MutableList<EnvironmentVariable> = filterAnnotations(annotations)
         clearEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
     }
 
 
     override fun beforeEach(context: ExtensionContext) {
-        val annotations = context.testMethod.get().annotations
+        var annotations = context.testMethod.get().annotations
+        annotations += context.testClass.get().annotations
         val environmentAnnotations: MutableList<EnvironmentVariable> = filterAnnotations(annotations)
         setEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
     }
