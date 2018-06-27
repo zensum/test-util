@@ -20,7 +20,7 @@ class EnvironmentVariablesExtension : AfterEachCallback, BeforeEachCallback, Bef
     override fun beforeAll(context: ExtensionContext) {
         val annotations = context.testClass.get().annotations
         val environmentAnnotations: MutableList<EnvironmentVariable> = filterAnnotations(annotations)
-        clearEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
+        setEnv(environmentAnnotations.map { Pair(it.key, it.value) }.toMap())
     }
 
     override fun afterAll(context: ExtensionContext) {
