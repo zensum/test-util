@@ -7,7 +7,7 @@
 Make it possible to annotate functions and test classes with `@EnvironmentVariable("key","value")`. Annotation uses reflections to set environment variables in the running jvm instance.
 ```
 @Test
-@EnvironmentVariable("key","value")
+@EnvironmentVariable(key="key",value="value")
 fun test() {
     asserts...
 }
@@ -15,8 +15,8 @@ fun test() {
 -----
 
 @EnvironmentVariables {
-    EnvironmentVariable("key","value"),
-    EnvironmentVariable("key2","value2")
+    EnvironmentVariable(key="key",value="value"),
+    EnvironmentVariable(key="key2",value="value2")
 }
 class TestClass {
 
