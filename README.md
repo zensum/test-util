@@ -14,10 +14,11 @@ fun test() {
 
 -----
 
-@EnvironmentVariables {
-    EnvironmentVariable(key="key",value="value"),
-    EnvironmentVariable(key="key2",value="value2")
-}
+@EnvironmentVariables(environmentVariables = {
+        @EnvironmentVariable(key = "test2", value = "glfkg"),
+        @EnvironmentVariable(key = "test1", value = "glfkg"),
+        @EnvironmentVariable(key = "tes3", value = "glfkg")
+})
 class TestClass {
 
 }
